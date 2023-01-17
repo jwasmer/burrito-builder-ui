@@ -5,7 +5,7 @@ import OrderForm from '../../components/OrderForm/OrderForm';
 import Orders from '../Orders/Orders'
 
 export default function App() {
-  const [orders, setOrders] = useState([])
+  const [orders, setOrders] = useState({orders: []})
 
   useEffect(() => {
     getOrders()
@@ -18,8 +18,8 @@ export default function App() {
   return (
     <main className="App">
       <header>
-        <h1>Burrito Builder</h1>
-        <OrderForm />
+        <h1 data-cy="header">Burrito Builder</h1>
+        <OrderForm setOrders={ setOrders }  />
       </header>
 
       <Orders 
@@ -27,14 +27,3 @@ export default function App() {
     </main>
   );
 }
-
-
-// class App extends Component {
-//   constructor(props) {
-//     super();
-//   }
-
-// componentDidMount() {
-//   getOrders()
-//     .catch(err => console.error('Error fetching:', err));
-// }

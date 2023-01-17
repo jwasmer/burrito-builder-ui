@@ -1,30 +1,28 @@
-import React from 'react';
+import React from 'react'
 import './Orders.css';
 
-export default function Orders({ orders }) { 
+export default function Orders({ orders }) {
 
-  const orderMaker = (orders) => {
+  const mapOrders = (orders) => { 
     if (orders) {
-      return  orders.map(order => {
+      return orders.orders.map((order, orderIndex) => {
         return (
-          <div className="order">
-            <h3>{order.name}</h3>
+          <div data-cy={`order-${orderIndex}`} key={orderIndex} className="order">
+            <h3 data-cy={`header-${orderIndex}`} >{order.name}</h3>
             <ul className="ingredient-list">
-              {order.ingredients.map(ingredient => {
-                return <li>{ingredient}</li>
+              {order.ingredients.map((ingredient, ingredientIndex) => {
+                return <li data-cy={`ingredient-${ingredientIndex}`} key={ingredientIndex}>{ingredient}</li>
               })}
             </ul>
           </div>
         )
       })
-    }
+    }    
   }
-
-  
 
   return (
     <section>
-      { orderMaker() ? orderMaker() : <p>No orders yet!</p> }
+      { orders ? mapOrders(orders) : <p>No orders yet!</p> }
     </section>
   )
 }

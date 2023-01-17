@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { postOrders } from '../../apiCalls';
 
-export default function OrderForm() {
+export default function OrderForm({ setOrders }) {
   const [name, setName] = useState('')
   const [ingredients, setIngredients] = useState([])
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    postOrders({
-      name: name,
-      ingredients: ingredients
-    })
-    clearInputs()
+    if (ingredients.length && name) {
+      postOrders({
+        name: name,
+        ingredients: ingredients
+      })
+      .then(data => {
+        setOrders(data)
+      })
+      clearInputs()
+    }
   }
 
   const handleIngredientsChange = (event) => {
@@ -26,17 +31,15 @@ export default function OrderForm() {
   }
 
   useEffect(() => {
-    console.log('Name update:', name)
   }, [name])
 
   useEffect(() => {
-    console.log('Ingredients update:', ingredients)
   }, [ingredients])
 
   const possibleIngredients = ['beans', 'steak', 'carnitas', 'sofritas', 'lettuce', 'queso fresco', 'pico de gallo', 'hot sauce', 'guacamole', 'jalapenos', 'cilantro', 'sour cream'];
   const ingredientButtons = possibleIngredients.map(ingredient => {
     return (
-      <button key={ingredient} name={ingredient} onClick={event => handleIngredientsChange(event)}>
+      <button data-cy={`button-${ingredient}`} key={ingredient} name={ingredient} onClick={event => handleIngredientsChange(event)}>
         {ingredient}
       </button>
     )
@@ -45,6 +48,7 @@ export default function OrderForm() {
   return (
     <form>
       <input
+        data-cy="name-input"
         type='text'
         placeholder='Name'
         name='name'
@@ -54,13 +58,13 @@ export default function OrderForm() {
 
       { ingredientButtons }
 
-      <p>Order: { ingredients.join(', ') || 'Nothing selected' }</p>
+      <p data-cy="order-confirmation">Order: { ingredients.join(', ') || 'Nothing selected' }</p>
 
-      <button onClick={event => handleSubmit(event)}>
+      <button data-cy="submit-order" onClick={event => handleSubmit(event)}>
         Submit Order
       </button>
 
-      <button onClick={clearInputs}>
+      <button data-cy="clear-inputs" onClick={clearInputs}>
         Clear Inputs
       </button>
     </form>
