@@ -1,10 +1,19 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import {getOrders} from '../../apiCalls';
 import OrderForm from '../../components/OrderForm/OrderForm';
+import Orders from '../Orders/Orders'
 
 export default function App() {
-  const [orders, setOrders] = useState(null)
+  const [orders, setOrders] = useState([])
+
+  useEffect(() => {
+    getOrders()
+      .catch(err => console.log('Error fetching:', err))
+      .then((data) => {
+        setOrders(data)
+      })
+  }, [])
 
   return (
     <main className="App">
@@ -13,7 +22,8 @@ export default function App() {
         <OrderForm />
       </header>
 
-      <Orders orders={this.state.orders}/>
+      <Orders 
+        orders={ orders }/>
     </main>
   );
 }
