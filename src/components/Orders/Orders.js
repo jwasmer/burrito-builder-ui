@@ -1,8 +1,8 @@
 import React from 'react';
 import './Orders.css';
 
-const Orders = props => {
-  const orderEls = props.orders.map(order => {
+export default function Orders({ orders }) {
+  const orderEls = orders.map(order => {
     return (
       <div className="order">
         <h3>{order.name}</h3>
@@ -13,13 +13,10 @@ const Orders = props => {
         </ul>
       </div>
     )
-  });
-
+  })
   return (
     <section>
       { orderEls.length ? orderEls : <p>No orders yet!</p> }
     </section>
   )
 }
-
-export default Orders;
